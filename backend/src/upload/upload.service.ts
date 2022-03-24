@@ -1,25 +1,44 @@
 import { Injectable } from "@nestjs/common";
-import * as fs from 'fs'
-import * as exifr from 'exifr'
-import { ChecksumHelper } from "src/utils/ChecksumHelper";
+import exifr from 'exifr';
+import * as fs from 'fs';
+import { Configuration } from "src/Configuration";
+import { ProviderService } from "src/provider/provider.service";
+import ResponseHelper from "src/utils/ResponseHelper";
+import { Utils } from "src/utils/Utils";
 
 
 @Injectable()
 export class UploadService {
 
-    private pathToImages = __dirname + "/../../files/"
-
-    saveFile(file: Express.Multer.File) {
-        let fileName = this.getImageName(file.originalname)
-        fs.writeFileSync(fileName, file.buffer)
-
-        let data = fs.readFileSync(fileName)
-        console.log(ChecksumHelper.generateChecksum(data));
+    constructor(private readonly providerService: ProviderService) {
+        this.createDir();
     }
 
-    saveExifMetaData() { }
+    saveFile(file: Express.Multer.File) {
+        try {
+            const originalName = file.originalname
+            const imagePath = Utils.getImagePathWithName(originalName)
 
-    private getImageName(originalname: string) {
-        return this.pathToImages + new Date().getTime() + "-" + originalname
+            fs.writeFileSync(imagePath, file.buffer)
+            this.saveExifMetaData(imagePath)
+            this.providerService.getThumbnail(originalName)
+            
+            return ResponseHelper.createSuccess()
+        } catch (err) {
+            return ResponseHelper.createError(err, "Could not upload file.")
+        }
+    }
+
+    private saveExifMetaData(fileName: string) {
+        exifr.parse(fileName).then(res => {
+            //console.log(res);
+            // TODO: Insert data into database
+        })
+    }
+
+    private createDir() {
+        if (!fs.existsSync(Configuration.imageDir)) {
+            fs.mkdirSync(Configuration.imageDir);
+        }
     }
 }
