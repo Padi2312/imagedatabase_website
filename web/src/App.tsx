@@ -1,19 +1,14 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Header from './components/Header';
+import HttpRequester from './core/HttpRequester';
 import LandingPage from './landingpage/LandingPage';
-import Header from './utils/Header';
 
 function App() {
+
+  new HttpRequester().get("/api")
   return (
     <div className="App">
-      <Router>
-        <Header />
-          <Switch>
-
-            <Route path="/" component={LandingPage} />
-
-          </Switch>
-      </Router>
+      <Header />
+      <LandingPage />
     </div>
   );
 }

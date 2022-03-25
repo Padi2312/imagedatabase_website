@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UploadModule } from './upload/upload.module';
-import * as path from 'path'
+import * as path from 'path';
+import { ApiModule } from './api/api.module';
 import { ImageModule } from './image/image.module';
 import { MetaDataModule } from './metadata/metadata.module';
 
@@ -29,7 +28,8 @@ import { MetaDataModule } from './metadata/metadata.module';
             entities: []
         }),*/
         ImageModule,
-        MetaDataModule
+        MetaDataModule,
+        ApiModule
     ],
     controllers: [],
     providers: [],

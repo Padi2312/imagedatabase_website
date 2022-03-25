@@ -1,14 +1,8 @@
-import { useState } from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
-import UploadModal from "../modals/UploadModal";
+import { Container, Navbar } from "react-bootstrap";
 
-export default function Header(){
-
-    return(
-
+export default function Header() {
+    return (
         <div>
-
             <Navbar id="navbar" collapseOnSelect expand="sm" bg="dark" variant="dark" >
                 <Container fluid>
                     <Navbar.Brand href="/">
@@ -20,7 +14,6 @@ export default function Header(){
                     </Navbar.Brand>
                 </Container>
             </Navbar >
-
         </div>
     )
 

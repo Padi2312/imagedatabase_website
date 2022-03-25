@@ -1,8 +1,9 @@
-import { Controller, Get, Param, Post, Res, UploadedFile, UseInterceptors } from "@nestjs/common";
-import { ImageService } from "./image.service";
+import { Controller, Get, Param, Post, Res, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import * as fs from 'fs';
-import { FileInterceptor } from "@nestjs/platform-express";
-import { UploadService } from "src/upload/upload.service";
+import { UploadService } from "src/services/upload.service";
+import { Utils } from "src/utils/Utils";
+import { ImageService } from "./image.service";
 
 @Controller('api/image')
 export class ImageController {
@@ -22,17 +23,19 @@ export class ImageController {
     }
 
     @Post("/upload")
-    @UseInterceptors(FileInterceptor('file'))
-    uploadImage(@UploadedFile() file: Express.Multer.File) {
-        return this.uploadService.saveFile(file)
+    @UseInterceptors(FileFieldsInterceptor([{ name: 'image' }]))
+    uploadImage(@UploadedFiles() files: { image?: Express.Multer.File[] }) {
+        if (files.image && files.image?.length > 0)
+            return this.uploadService.saveFile(files.image)
     }
 
     @Get("/download/:imageid")
     downloadImage(@Res() res, @Param('imageid') id) {
-        const file = fs.createReadStream(__dirname + '/../../files/' + 'export.csv');
+        const fileName = "Bild.png"// Get Image Name from Database
+        const file = fs.createReadStream(Utils.getImagePathWithName(fileName));
         res.set({
             'Content-Type': 'text/csv',
-            'Content-Disposition': 'attachment; filename="export.csv"',
+            'Content-Disposition': `attachment; filename="${fileName}"`,
         });
         file.pipe(res);
     }

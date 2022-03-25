@@ -1,5 +1,5 @@
-import { ErrorResponse } from "src/responses/errorresponse.model";
-import { SuccessResponse } from "src/responses/successresponse.model";
+import { ErrorResponse } from "src/utils/responses/errorresponse.model";
+import { SuccessResponse } from "src/utils/responses/successresponse.model";
 
 export default class ResponseHelper {
 

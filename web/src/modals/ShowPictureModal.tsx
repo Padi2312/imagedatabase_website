@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Button, Modal, ModalBody, ModalHeader, Stack } from "react-bootstrap";
-import IModalProps from "../interfaces/IModalProps";
+import { useState } from "react";
+import { Button, Modal, ModalBody, ModalHeader } from "react-bootstrap";
 import { BsPencilSquare } from 'react-icons/bs';
+import IModalProps from "../interfaces/IModalProps";
 import ChangeTagsModal from "./ChangeTagsModal";
 
 export default function ShowPictureModal(props: IModalProps) {
@@ -10,10 +10,10 @@ export default function ShowPictureModal(props: IModalProps) {
 
     return (
         <div>        
-            <Modal fullscreen={true} show={props.show} onHide={() => props.onClose()} centered>
+            <Modal size="lg" show={props.show} onHide={() => props.onClose()} centered>
                 <ModalHeader closeButton>Owner</ModalHeader>
                 <ModalBody>
-                    <img src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="alt" className="img" />
+                    <img src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="alt" className="img-fluid" />
                     <hr />
                     <h2>Tags</h2> <br />
                     Beispiel 1
