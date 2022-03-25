@@ -9,11 +9,13 @@ export default function ShowPictureModal(props: IModalProps) {
     const [showChangeTagsModal, setShowChangeTagsModal] = useState(false);
 
     return (
-        <div>        
-            <Modal size="lg" show={props.show} onHide={() => props.onClose()} centered>
+        <div>
+            <Modal size="xl" show={props.show} onHide={() => props.onClose()} centered>
                 <ModalHeader closeButton>Owner</ModalHeader>
                 <ModalBody>
-                    <img src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="alt" className="img-fluid" />
+                    <div className="d-flex justify-content-center">
+                        <img src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="alt" className="img-fluid" />
+                    </div>
                     <hr />
                     <h2>Tags</h2> <br />
                     Beispiel 1
