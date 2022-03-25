@@ -18,12 +18,10 @@ export default function ShowPictureModal(props: IModalProps) {
                     <h2>Tags</h2> <br />
                     Beispiel 1
                     Beispiel 2
-                    <details>
-                        <summary>Tags ändern</summary>
-                        <div onClick={() => setShowChangeTagsModal(true)}>
-                            <BsPencilSquare className="clickableSmall" />
-                        </div>
-                    </details>
+                    <br />
+                    <div onClick={() => setShowChangeTagsModal(true)}>
+                        <span className="clickableSmall">Tags ändern <BsPencilSquare /></span>
+                    </div>
                     <hr />
                     <h2>Metadaten</h2><br />
                     <details>
