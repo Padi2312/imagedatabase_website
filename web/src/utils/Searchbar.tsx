@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react'
 import { Form, Row, Col, Button, FormGroup, InputGroup, Stack } from 'react-bootstrap'
-import { FaSearch } from 'react-icons/fa'
+import { FaSearch, FaUpload } from 'react-icons/fa'
 import UploadModal from '../modals/UploadModal'
 
 export interface SearchBarProps {
@@ -42,7 +42,7 @@ function SearchBar(props: SearchBarProps) {
                         </Button>
                         <div className='vr'/>
                         <Button variant="secondary" onClick={() => setShowUploadModal(true)}>
-                            Bild Hochladen
+                            <span className="nobreak" >Hochladen <FaUpload /></span>
                         </Button>
                 </Stack>
                 <Form.Text muted >
