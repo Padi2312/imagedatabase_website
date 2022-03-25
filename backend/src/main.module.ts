@@ -3,6 +3,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UploadModule } from './upload/upload.module';
 import * as path from 'path'
+import { ImageModule } from './image/image.module';
+import { MetaDataModule } from './metadata/metadata.module';
 
 @Module({
     imports: [
@@ -26,7 +28,8 @@ import * as path from 'path'
             database: 'webservice',
             entities: []
         }),*/
-        UploadModule
+        ImageModule,
+        MetaDataModule
     ],
     controllers: [],
     providers: [],

@@ -1,11 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import * as sharp from 'sharp'
-import { Configuration } from "src/Configuration";
+import * as sharp from 'sharp';
 import { Utils } from "src/utils/Utils";
 
-@Injectable()
-export class ProviderService {
 
+@Injectable()
+export class ImageService {
 
     getThumbnailsForSearch() {
 
@@ -14,7 +13,6 @@ export class ProviderService {
     getThumbnail(imageName: string) {
         try {
             const thumbnailName = Utils.thumbnailName(imageName)
-
             sharp(Utils.getImagePathWithName(imageName))
                 .resize(200)
                 .jpeg({ quality: 60 })
@@ -25,4 +23,5 @@ export class ProviderService {
             throw err
         }
     }
+
 }
