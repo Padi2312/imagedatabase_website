@@ -1,0 +1,21 @@
+.body{
+    width:94vw;
+    margin: 3vh 3vw;
+    padding-bottom: 3vh;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.clickable:hover{
+    border: 5px solid #DDD;
+}
+
+.clickableSmall{
+    cursor: pointer;
+}
+
+.clickableSmall:hover{
+    border: 1px solid #DDD;
+}
