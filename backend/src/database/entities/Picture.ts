@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Double,
+  Timestamp,
 } from 'typeorm';
 
 @Entity({ name: 'picture' })
@@ -11,12 +12,20 @@ export class Picture extends BaseEntity {
 
   @PrimaryGeneratedColumn()
   id!: number;
-
+  
   @Column()
   artist!: string;
 
   @Column()
+  path!: string;
+
+  @Column()
+  originalname: string;
+
+  @Column()
   usercomment!: string;
+  
+
 
   @Column()
   yresolution!: number;
@@ -31,7 +40,7 @@ export class Picture extends BaseEntity {
   model!: string;
 
   @Column()
-  imageheigth!: number;
+  imageheight!: number;
 
   @Column()
   make!: string;
@@ -49,7 +58,7 @@ export class Picture extends BaseEntity {
   orientation!: string;
 
   @Column()
-  modifydate!: Date;
+  modifydate!: string;
 
   @Column()
   exifversion!: string;
@@ -67,16 +76,16 @@ export class Picture extends BaseEntity {
   offsettimedigitized!: string;
 
   @Column()
-  exifimageheigth!: number;
+  exifimageheight!: number;
 
   @Column()
-  datetimeoriginal!: Date;
+  datetimeoriginal!: string;
 
   @Column()
   whitebalance!: string;
 
   @Column()
-  createdate!: Date;
+  createdate!: string;
 
   @Column({ type: 'double' })
   focallength!: Double;

@@ -5,7 +5,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'picture_tag' })
-export class PicutreTag extends BaseEntity {
+export class PictureTag extends BaseEntity {
 
   @PrimaryColumn()
   pictureId!: number;

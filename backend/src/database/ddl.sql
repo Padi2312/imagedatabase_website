@@ -54,3 +54,6 @@ CREATE TABLE IF NOT EXISTS picture_tag (
   tagId VARCHAR(45) NOT NULL,
   PRIMARY KEY (pictureId, tagId))
 ENGINE = InnoDB;
+
+
+

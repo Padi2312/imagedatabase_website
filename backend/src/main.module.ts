@@ -1,3 +1,7 @@
+import { Tag } from './database/entities/Tag';
+import { PictureTag } from './database/entities/PictureTag';
+import { Picture } from './database/entities/Picture';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
@@ -10,23 +14,23 @@ import { MetaDataModule } from './metadata/metadata.module';
         ServeStaticModule.forRoot({
             rootPath: path.join(__dirname, '..', 'public'),
         }),
-        /*TypeOrmModule.forRoot({
-           
+        TypeOrmModule.forRoot({
+          /* 
             type: 'mysql',
             host: 'mysql.int.parndt.de',
             port: 3306,
             username: 'root',
             password: 'mysql',
             database: 'empstamp',  
-            
+            */
             type: 'mysql',
             host: 'localhost',
             port: 3306,
             username: 'root',
             password: '',
             database: 'webservice',
-            entities: []
-        }),*/
+            entities: [Picture, PictureTag, Tag]
+        }),
         ImageModule,
         MetaDataModule,
         ApiModule
@@ -34,4 +38,4 @@ import { MetaDataModule } from './metadata/metadata.module';
     controllers: [],
     providers: [],
 })
-export class MainModule { }
+export class MainModule {}
