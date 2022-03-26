@@ -10,7 +10,9 @@ export default function Header() {
                             width="auto"
                             height="70"
                             alt="Bilder DB Logo"
+                            src={"./logo.svg"}
                         />
+                        BilderDB
                     </Navbar.Brand>
                 </Container>
             </Navbar >

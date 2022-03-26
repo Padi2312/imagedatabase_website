@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Button, Modal, ModalBody, ModalHeader } from "react-bootstrap";
 import { BsPencilSquare } from 'react-icons/bs';
+import { FaDownload } from "react-icons/fa";
+import TagList from "../components/TagList";
 import IModalProps from "../interfaces/IModalProps";
 import ChangeTagsModal from "./ChangeTagsModal";
 
@@ -17,15 +19,13 @@ export default function ShowPictureModal(props: IModalProps) {
                         <img src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="alt" className="img-fluid" />
                     </div>
                     <hr />
-                    <h2>Tags</h2> <br />
-                    Beispiel 1
-                    Beispiel 2
-                    <br />
+                    <h4>Tags</h4>
+                    <TagList tagList={["ein", "2ein", "sdf5r", "3rfed"]} />
                     <div onClick={() => setShowChangeTagsModal(true)}>
                         <span className="clickableSmall">Tags ändern <BsPencilSquare /></span>
                     </div>
                     <hr />
-                    <h2>Metadaten</h2><br />
+                    <h4>Metadaten</h4>
                     <details>
                         <summary>Metadaten</summary>
                         <p>Genaue Metadaten</p>
@@ -36,7 +36,7 @@ export default function ShowPictureModal(props: IModalProps) {
                         Schließen
                     </Button>
                     <Button className="ms-auto" variant="primary" onClick={() => props.onClose()}>
-                        Download
+                        <FaDownload /> Download
                     </Button>
                 </Modal.Footer>
             </Modal>
