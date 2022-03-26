@@ -21,20 +21,12 @@ export class ImageController {
     private readonly imageService: ImageService,
     private readonly uploadService: UploadService,
     private readonly databaseService: DatabaseService,
-  ) {}
+  ) { }
 
   @Get('/random')
   async getRandomImages() {
-    try {
-      const result = await this.databaseService.get20Pictures();
-      console.log(result)
-      return ResponseHelper.createSuccess(result);
-    } catch (error) {
-      return ResponseHelper.createError(
-        error,
-        'Es ist ein Fehler aufgetreten',
-      );
-    }
+    return this.imageService.getRandomImages()
+
   }
 
   @Get('/search/:text')
@@ -58,13 +50,19 @@ export class ImageController {
   }
 
   @Get('/download/:imageid')
-  downloadImage(@Res() res, @Param('imageid') id) {
-    const fileName = 'Bild.png'; // Get Image Name from Database
-    const file = fs.createReadStream(Utils.getImagePathWithName(fileName));
-    res.set({
-      'Content-Type': 'text/csv',
-      'Content-Disposition': `attachment; filename="${fileName}"`,
-    });
-    file.pipe(res);
+  async downloadImage(@Res() res, @Param('imageid') id) {
+    try {
+      const image = await this.databaseService.getPicture(id)
+      const file = fs.createReadStream(Utils.getImagePathWithName(image.picture.originalname));
+      res.set({
+        'Content-Type': 'text/csv',
+        'Content-Disposition': `attachment; filename="${image.picture.originalname}"`,
+      });
+      file.pipe(res);
+    }
+    catch (err) {
+      console.log(err)
+    }
+
   }
 }

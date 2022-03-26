@@ -1,0 +1,15 @@
+.PictureThumbnail {
+  cursor: pointer;
+  max-width: fit-content;   
+  .image-card-body{
+    max-width: fit-content;   
+  }
+}
+
+.PictureThumbnail:hover {
+  border: 5px solid #ddd;
+}
+
+.imagethumbnail{
+
+}

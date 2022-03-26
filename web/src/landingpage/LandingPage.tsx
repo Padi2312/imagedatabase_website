@@ -1,13 +1,86 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
+import PictureThumbnail from '../components/picturethumbnail/PictureThumbnail';
 import SearchBar from '../components/Searchbar';
+import PictureServie from '../core/PictureService';
 import ShowPictureModal from '../modals/ShowPictureModal';
+import PictureTagUrlModel from '../models/PictureTagUrlModel';
 import './LandingPage.scss';
 
 
 export default function LandingPage() {
 
+    const pictureService = new PictureServie()
     const [showPictureModal, setShowPictureModal] = useState(false);
+    const [currentPicture, setCurrentPicture] = useState<PictureTagUrlModel|null>(null);
+
+    const [elements, setElements] = useState<JSX.Element[]>([]);
+
+
+    useEffect(() => {
+        pictureService.getRandomImages().then((res: PictureTagUrlModel[]) => {
+            renderGrid(res)
+        })
+        return () => { }
+    }, [])
+
+
+
+    const renderCols = (columnAmount: number, pictures: PictureTagUrlModel[], currentRow: number): JSX.Element[] => {
+        const columnViews = []
+        for (let column = 0; column < columnAmount; column++) {
+            const element = pictures[currentRow + column]
+            columnViews.push(
+                <Col onClick={() => {
+                    setShowPictureModal(true)
+                    setCurrentPicture(element)
+                }
+                } key={currentRow + column}>
+                    <PictureThumbnail picture={element} />
+                </Col>
+            )
+        }
+        return columnViews
+    }
+
+    const renderGrid = (pictures: PictureTagUrlModel[]) => {
+        if (pictures.length > 3) {
+            const rows = Math.floor(pictures.length / 4)
+            const remainingCols = pictures.length % 4
+
+            const jsxElement: JSX.Element[] = []
+            for (let row = 0; row <= rows; row++) {
+                if (row == rows - 1) {
+                    jsxElement.push(
+                        <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} key={row}>
+                            {
+                                renderCols(remainingCols, pictures, row)
+                            }
+                        </Row>
+                    )
+                }
+                else {
+                    jsxElement.push(
+                        <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} key={row}>
+                            {
+                                renderCols(4, pictures, row)
+                            }
+                        </Row>
+                    )
+                }
+            }
+            setElements(jsxElement)
+        }
+        else {
+            const jsxElement = []
+            jsxElement.push(<Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} index={-1}>
+                {
+                    renderCols(pictures.length, pictures, 1)
+                }
+            </Row>)
+            setElements(jsxElement)
+        }
+    }
 
     const textWork = (text: string, prev?: string) => {
         /*Filler Method to include Searchbar*/
@@ -17,162 +90,13 @@ export default function LandingPage() {
         <div className="body">
 
             <SearchBar onSearch={textWork} onChange={textWork} />
-            <ShowPictureModal show={showPictureModal} onClose={() => setShowPictureModal(false)} />
-
+            <ShowPictureModal show={showPictureModal} onClose={() => setShowPictureModal(false)} picture={currentPicture} />
             <Container fluid>
-                <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4}>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                </Row>
-                <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4}>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                </Row>
-                <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4}>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                </Row>
-                <Row className="mb-3" sm={1} md={2} lg={2} xl={4} xxl={4}>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="clickable" onClick={() => setShowPictureModal(true)}>
-                            <Card>
-                                <Card.Body>
-                                    <img className='img-thumbnail' src="https://mdbootstrap.com/img/new/standard/city/042.webp" alt="Bild" />
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                </Row>
+                {
+                    elements
+                }
             </Container>
-        </div>
+        </div >
     )
 }
+

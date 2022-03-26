@@ -31,7 +31,7 @@ export class UploadService {
         this.saveToDatabase(file, imagePath)
 
         //Save thumbnail on upload for more speed and efficiency
-        this.imageService.getThumbnail(originalName)
+        this.imageService.generateThumbnail(originalName)
       } catch (err) {
         errorOnSavingFiles.push(file.originalname)
       }

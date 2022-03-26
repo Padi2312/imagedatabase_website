@@ -50,6 +50,22 @@ export default class HttpRequester {
             })
     }
 
+    downloadFile = (path: string, fileName: string): Promise<any> => {
+        return fetch(path, { method: "GET" }).then(async (res) => {
+            return res.blob()
+        }).then(blob => {
+            var url = window.URL.createObjectURL(blob)
+            var a = document.createElement('a')
+            a.href = url
+            a.download = fileName
+            document.body.appendChild(a)
+            a.click()
+            a.remove()
+        }).catch(err => {
+            throw err
+        })
+    }
+
     private createFormData = (fileList: FileList) => {
         if (fileList === null)
             return

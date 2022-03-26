@@ -1,5 +1,3 @@
-import { Double } from 'typeorm';
-
 export default interface PictureDto extends PictureExif {
   id?: number;
   artist?: string;
@@ -31,11 +29,11 @@ export interface PictureExif {
   DateTimeOriginal?: string;
   WhiteBalance?: string;
   CreateDate?: string;
-  FocalLength?: Double;
-  ExposureTime?: Double;
+  FocalLength?: number;
+  ExposureTime?: number;
   OffsetTime?: string;
   OffsetTimeOriginal?: string;
   Flash?: string;
   LightSource?: string;
-  FNumber?: Double;
+  FNumber?: number;
 }

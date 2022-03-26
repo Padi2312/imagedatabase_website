@@ -9,7 +9,7 @@ function TagList(props: TagListProps) {
     return (
         <div>
             {
-                props.tagList.map((element, index) => {
+                props.tagList?.map((element, index) => {
                     return (
                         <Badge bg="info" key={index} className="me-1">
                             {element}

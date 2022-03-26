@@ -1,25 +1,28 @@
-.body{
-    width:94vw;
-    margin: 3vh 3vw;
-    padding-bottom: 3vh;
+.body {
+  margin: 3vh 3vw;
+  padding-bottom: 3vh;
 }
 
-.clickable{
-    cursor: pointer;
+.clickable {
+  cursor: pointer;
 }
 
-.clickable:hover{
-    border: 5px solid #DDD;
+.clickable:hover {
+  border: 5px solid #ddd;
 }
 
-.clickableSmall{
-    cursor: pointer;
+.clickableSmall {
+  cursor: pointer;
 }
 
-.clickableSmall:hover{
-    border: 1px solid #DDD;
+.clickableSmall:hover {
+  border: 1px solid #ddd;
 }
 
-.nobreak{
-    white-space: nowrap;
+.nobreak {
+  white-space: nowrap;
+}
+
+.image-col {
+  max-width: fit-content;
 }

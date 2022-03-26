@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import PictureTagUrlModel from 'src/models/PictureTagUrlModel';
 import { getManager } from 'typeorm';
 import { Tag } from './../database/entities/Tag';
 import PictureDto from './../Dtos/PictureDto';
@@ -18,7 +19,7 @@ export class DatabaseService {
       .execute();
   }
 
-  async get20Pictures() {
+  async get20Pictures(): Promise<PictureTagUrlModel[]> {
     const results = await getManager()
       .createQueryBuilder()
       .select()
@@ -45,12 +46,12 @@ export class DatabaseService {
     return await this.modifyPictureResult(results);
   }
 
-  async getPicture(id: number) {
+  async getPicture(id: number): Promise<PictureTagUrlModel> {
     const result: Picture = await getManager().query(
       'SELECT * FROM picture WHERE id = ?',
       [id],
     );
-    const picture = this.toJson(result);
+    const picture = this.toJson(result) as Picture[]
     const tags = await this.getTags(id);
     return { picture: picture[0], tags: tags };
   }
@@ -129,7 +130,7 @@ export class DatabaseService {
     return tags;
   }
 
-  async modifyPictureResult(results: Picture[]) {
+  async modifyPictureResult(results: Picture[]): Promise<PictureTagUrlModel[]> {
     const resultJson: Picture[] = Object.values(
       JSON.parse(JSON.stringify(results)),
     );

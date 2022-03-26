@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS picture (
   id INT NOT NULL AUTO_INCREMENT,
   artist VARCHAR(65) NOT NULL,
   path VARCHAR(255) NOT NULL,
-  originalname VARCHAR(65),
-  name VARCHAR(65),
+  originalname VARCHAR(255),
+  name VARCHAR(255),
   usercomment VARCHAR(255),
 
   YResolution INT,
