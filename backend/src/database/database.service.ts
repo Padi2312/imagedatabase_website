@@ -17,7 +17,6 @@ export class DatabaseService {
       .into(Picture)
       .values(body.picture)
       .execute();
-    await this.addTags(body.tags, body.picture.id);
   }
 
   async get20Pictures() {
@@ -66,8 +65,8 @@ export class DatabaseService {
         path: data.path,
         name: data.name,
         usercomment: data.usercomment,
-        orientation: data.orientation,
-        modifydate: data.modifydate,
+        Orientation: data.orientation,
+        ModifyDate: data.modifydate,
       })
       .where('id = :id', { id: data.id })
       .execute();

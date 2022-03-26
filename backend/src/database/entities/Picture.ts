@@ -29,85 +29,86 @@ export class Picture extends BaseEntity {
   name!: string;
 
 
-  @Column()
-  yresolution!: number;
 
   @Column()
-  xresolution!: number;
+  YResolution: number;
 
   @Column()
-  imagewidth!: number;
+  XResolution: number;
 
   @Column()
-  model!: string;
+  ImageWidth: number;
 
   @Column()
-  imageheight!: number;
+  Model: string;
 
   @Column()
-  make!: string;
+  ImageHeight: number;
 
   @Column()
-  software!: string;
+  Make: string;
 
   @Column()
-  ycbcrpositioning!: number;
+  Software: string;
 
   @Column()
-  imagedescription!: string;
+  YCbCrPositioning: number;
 
   @Column()
-  orientation!: string;
+  ImageDescription: string;
 
   @Column()
-  modifydate!: string;
+  Orientation: string;
 
   @Column()
-  exifversion!: string;
+  ModifyDate: string;
 
   @Column()
-  colorspace!: number;
+  ExifVersion: string;
 
   @Column()
-  exifimagewidth!: number;
+  ColorSpace: number;
 
   @Column()
-  iso!: number;
+  ExifImageWidth: number;
 
   @Column()
-  offsettimedigitized!: string;
+  ISO: number;
 
   @Column()
-  exifimageheight!: number;
+  OffsetTimeDigitized: string;
 
   @Column()
-  datetimeoriginal!: string;
+  ExifImageHeight: number;
 
   @Column()
-  whitebalance!: string;
+  DateTimeOriginal: string;
 
   @Column()
-  createdate!: string;
+  WhiteBalance: string;
+
+  @Column()
+  CreateDate: string;
 
   @Column({ type: 'double' })
-  focallength!: Double;
+  FocalLength: Double;
 
   @Column({ type: 'double' })
-  exposuretime!: Double;
+  ExposureTime: Double;
 
   @Column()
-  offsettime!: string;
+  OffsetTime: string;
 
   @Column()
-  offsettimeoriginal!: string;
+  OffsetTimeOriginal: string;
 
   @Column()
-  flash!: string;
+  Flash: string;
 
   @Column()
-  lightsource!: string;
+  LightSource: string;
 
   @Column({ type: 'double' })
-  fnumber!: Double;
+  FNumber: Double;
 
 }
