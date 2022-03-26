@@ -19,6 +19,19 @@ export default class PictureServie {
         })
     }
 
+    searchForPictures = (text: string) => {
+        const searchText = encodeURIComponent(text)
+        return this.httpRequester.get("/api/image/search/" + searchText).then((res: ResponseModel) => {
+            if (res.success) {
+                const result = (res as SuccessResponse).data
+                return (result as unknown as PictureTagUrlModel[])
+            }
+            else {
+                return []
+            }
+        })
+    }
+
 
     downloadImage = (downloadUrl: string | undefined, fileName: string | undefined) => {
         if (downloadUrl && fileName)

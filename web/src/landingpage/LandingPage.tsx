@@ -12,13 +12,14 @@ export default function LandingPage() {
 
     const pictureService = new PictureServie()
     const [showPictureModal, setShowPictureModal] = useState(false);
-    const [currentPicture, setCurrentPicture] = useState<PictureTagUrlModel|null>(null);
+    const [currentPicture, setCurrentPicture] = useState<PictureTagUrlModel | null>(null);
 
     const [elements, setElements] = useState<JSX.Element[]>([]);
 
 
     useEffect(() => {
         pictureService.getRandomImages().then((res: PictureTagUrlModel[]) => {
+            console.log(res)
             renderGrid(res)
         })
         return () => { }
@@ -29,7 +30,7 @@ export default function LandingPage() {
     const renderCols = (columnAmount: number, pictures: PictureTagUrlModel[], currentRow: number): JSX.Element[] => {
         const columnViews = []
         for (let column = 0; column < columnAmount; column++) {
-            const element = pictures[currentRow + column]
+            const element = pictures[(currentRow+(currentRow*3)) + column]
             columnViews.push(
                 <Col onClick={() => {
                     setShowPictureModal(true)
@@ -45,12 +46,12 @@ export default function LandingPage() {
 
     const renderGrid = (pictures: PictureTagUrlModel[]) => {
         if (pictures.length > 3) {
-            const rows = Math.floor(pictures.length / 4)
+            const rows = Math.ceil(pictures.length / 4)
             const remainingCols = pictures.length % 4
 
             const jsxElement: JSX.Element[] = []
-            for (let row = 0; row <= rows; row++) {
-                if (row == rows - 1) {
+            for (let row = 0; row < rows; row++) {
+                if (row == rows - 1 ) {
                     jsxElement.push(
                         <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} key={row}>
                             {
@@ -82,14 +83,15 @@ export default function LandingPage() {
         }
     }
 
-    const textWork = (text: string, prev?: string) => {
-        /*Filler Method to include Searchbar*/
+    const onSearch = (text: string, prev?: string) => {
+        pictureService.searchForPictures(text).then(res => {
+            renderGrid(res)
+        })
     }
 
     return (
         <div className="body">
-
-            <SearchBar onSearch={textWork} onChange={textWork} />
+            <SearchBar onSearch={onSearch} onChange={() => { }} />
             <ShowPictureModal show={showPictureModal} onClose={() => setShowPictureModal(false)} picture={currentPicture} />
             <Container fluid>
                 {
