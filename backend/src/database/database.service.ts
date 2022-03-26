@@ -1,21 +1,20 @@
-import { PictureTag } from './entities/PictureTag';
-import { Tag } from './../database/entities/Tag';
-import { Picture } from './entities/Picture';
 import { Injectable } from '@nestjs/common';
 import { getManager } from 'typeorm';
-import InsertPictureDto from './../Dtos/InsertPictureDto';
+import { Tag } from './../database/entities/Tag';
 import PictureDto from './../Dtos/PictureDto';
 import UpdatePictureDto from './../Dtos/UpdatePictureDto';
 import UpdateTagsDto from './../Dtos/UpdateTagsDto';
+import { Picture } from './entities/Picture';
+import { PictureTag } from './entities/PictureTag';
 
 @Injectable()
 export class DatabaseService {
-  async savePictureMetaData(body: InsertPictureDto) {
+  async savePictureMetaData(picture: PictureDto) {
     await getManager()
       .createQueryBuilder()
       .insert()
       .into(Picture)
-      .values(body.picture)
+      .values(picture)
       .execute();
   }
 
