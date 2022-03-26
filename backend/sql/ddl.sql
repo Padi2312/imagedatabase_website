@@ -5,7 +5,7 @@ USE webservice;
 
 CREATE TABLE IF NOT EXISTS tag (
   id INT NOT NULL AUTO_INCREMENT,
-  tagname VARCHAR(65) NULL,
+  tagname VARCHAR(65) NOT NULL,
   PRIMARY KEY (id))
 ENGINE = InnoDB;
 
@@ -13,35 +13,37 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS picture (
   id INT NOT NULL AUTO_INCREMENT,
   artist VARCHAR(65) NOT NULL,
-  usercomment VARCHAR(255) NOT NULL,
+  path VARCHAR(255) NOT NULL,
+  originalname VARCHAR(65),
+  usercomment VARCHAR(255),
 
-  yresolution INT NOT NULL,
-  xresolution INT NOT NULL,
-  imagewidth INT NOT NULL,
-  model VARCHAR(65) NOT NULL,
-  imageheight INT NOT NULL,
-  make VARCHAR(65) NOT NULL,
-  software VARCHAR(65) NOT NULL,
-  ycbcrpositioning INT NOT NULL,
-  imagedescription VARCHAR(65) NOT NULL,
-  orientation VARCHAR(65) NOT NULL,
-  modifydate DATETIME NOT NULL,
-  exifversion VARCHAR(65) NOT NULL,
-  colorspace INT NOT NULL,
-  exifimagewidth INT NOT NULL,
-  iso INT NOT NULL,
-  offsettimedigitized VARCHAR(65) NOT NULL,
-  exifimageheight INT NOT NULL,
-  datetimeoriginal DATETIME NOT NULL,
-  whitebalance VARCHAR(65) NOT NULL,
-  createdate DATETIME NOT NULL,
-  focallength DOUBLE NOT NULL,
-  exposuretime DOUBLE NOT NULL,
-  offsettime VARCHAR(65) NOT NULL,
-  offsettimeoriginal VARCHAR(65) NOT NULL,
-  flash VARCHAR(65) NOT NULL,
-  lightsource VARCHAR(65) NOT NULL,
-  fnumber DOUBLE NOT NULL,
+  yresolution INT,
+  xresolution INT,
+  imagewidth INT,
+  model VARCHAR(65),
+  imageheight INT,
+  make VARCHAR(65),
+  software VARCHAR(65),
+  ycbcrpositioning INT,
+  imagedescription VARCHAR(65),
+  orientation VARCHAR(65),
+  modifydate DATETIME,
+  exifversion VARCHAR(65),
+  colorspace INT,
+  exifimagewidth INT,
+  iso INT,
+  offsettimedigitized VARCHAR(65),
+  exifimageheight INT,
+  datetimeoriginal DATETIME,
+  whitebalance VARCHAR(65),
+  createdate DATETIME,
+  focallength DOUBLE,
+  exposuretime DOUBLE,
+  offsettime VARCHAR(65),
+  offsettimeoriginal VARCHAR(65),
+  flash VARCHAR(65),
+  lightsource VARCHAR(65),
+  fnumber DOUBLE,
 
   PRIMARY KEY (id))
 ENGINE = InnoDB;
@@ -49,9 +51,6 @@ ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS picture_tag (
   pictureId INT NOT NULL,
-  tagId VARCHAR(45) NULL,
+  tagId VARCHAR(45) NOT NULL,
   PRIMARY KEY (pictureId, tagId))
 ENGINE = InnoDB;
-
-
-
