@@ -3,11 +3,11 @@ export default class HttpRequester {
     private readonly baseUrl = process.env.REACT_APP_BASEURL
 
     async get(path: string) {
-        const url = this.baseUrl + path
-        await fetch(url, { method: "GET" }).then(res => {
+        const url = this.getUrl(path)
+        return fetch(url, { method: "GET" }).then(async (res) => {
             return res.json()
-        }).then(res => {
-            return res
+        }).then(result => {
+            return result
         })
             .catch(err => {
                 throw err
@@ -16,8 +16,8 @@ export default class HttpRequester {
 
 
     async post(path: string, data: any) {
-        const url = this.baseUrl + path
-        return await fetch(url, {
+        const url = this.getUrl(path)
+        return fetch(url, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -35,9 +35,9 @@ export default class HttpRequester {
     }
 
     async uploadFile(path: string, files: FileList): Promise<any> {
-        const url = this.baseUrl + path
+        const url = this.getUrl(path)
         const data = this.createFormData(files)
-        return await fetch(url, {
+        return fetch(url, {
             method: "POST",
             body: data,
         }).then(res => {
@@ -58,9 +58,17 @@ export default class HttpRequester {
         for (let index = 0; index < fileList.length; index++) {
             const element = fileList[index];
             formData.append("image", element)
-
         }
         return formData
+    }
+
+    private getUrl(path: string) {
+        if (process.env.NODE_ENV == "development") {
+            return this.baseUrl + path
+        }
+        else {
+            return path
+        }
     }
 
 }

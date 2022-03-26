@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  imagedb:
+    container_name: imagedb
+    build:
+      context: ./web
+    restart: unless-stopped
+    depends_on:
+      - imagedb_server
+    ports:
+      - 3000:80
+
+  imagedb_server:
+    container_name: imagedb_server
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      imagedb_database:
+        condition: service_healthy 
+    ports:
+      - 8080:8080
+
+
+  imagedb_database:
+    container_name: imagedb_database
+    image: mysql:5.7
+    restart: unless-stopped
+    volumes:
+      - ./database/data:/var/lib/mysql
+      - ./database/scripts:/docker-entrypoint-initdb.d:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: mysql
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      TZ: Europe/Berlin
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    expose:
+      - 3306
+

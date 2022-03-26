@@ -8,7 +8,7 @@ export default function Header() {
                     <Navbar.Brand href="/">
                         <img
                             width="auto"
-                            height="70"
+                            height="50"
                             alt="Bilder DB Logo"
                             src={"./logo.svg"}
                         />
