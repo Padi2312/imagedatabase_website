@@ -36,12 +36,12 @@ export class DatabaseService {
       .from(Picture, 'picture')
       .leftJoinAndSelect('picture_tag', 'picture.id')
       .leftJoinAndSelect('tag', 'picture_tag.tagId')
-      .where('picture.artist like :artist', { artist: `%${text}%` })
-      .orWhere('picture.usercomment like :usercomment', {
+      .where('picture.artist LIKE :artist', { artist: `%${text}%` })
+      .orWhere('picture.usercomment LIKE :usercomment', {
         usercomment: `%${text}%`,
       })
-      .orWhere('picture.originalname like :ogname', { ogname: `%${text}%` })
-      .orWhere('tag.tagname like :tagname', { tagname: `%${text}%` })
+      .orWhere('picture.originalname LIKE :ogname', { ogname: `%${text}%` })
+      .orWhere('tag.tagname LIKE :tagname', { tagname: `%${text}%` })
       .execute();
     return await this.modifyPictureResult(results);
   }
@@ -75,8 +75,43 @@ export class DatabaseService {
   }
 
   async updateTags(data: UpdateTagsDto) {
-    await this.addTags(data.tags, data.id);
-    // await this.removeTagsLeft(data.tags, data.id);
+    for (const tag of data.tags) {
+      await getManager()
+        .createQueryBuilder()
+        .insert()
+        .into(Tag)
+        .values({ tagname: tag })
+        .orUpdate({ conflict_target: ['id'], overwrite: ['tagname'] })
+        .execute();
+    }
+    const tagList: number[] = await this.getTagList(data);
+    for (const tag of tagList) {
+      await getManager()
+        .createQueryBuilder()
+        .insert()
+        .into(PictureTag)
+        .values({ pictureId: data.id, tagId: tag })
+        .orIgnore()
+        .execute();
+    }
+    const tags: PictureTag[] = await getManager().find(PictureTag, {
+      pictureId: data.id,
+    });
+    for (const tag of tags) {
+      const tagNumber = tag.tagId;
+      let found = false;
+      for (const tagId of tagList) {
+        if (tagId == tagNumber) {
+          found = true;
+        }
+      }
+      if (!found) {
+        await getManager().delete(PictureTag, {
+          pictureId: data.id,
+          tagId: tagNumber,
+        });
+      }
+    }
   }
 
   toJson(input: any) {
@@ -107,47 +142,19 @@ export class DatabaseService {
     return newpictures;
   }
 
-  async addTags(tags: string[], pictureId: number) {
-    tags.forEach(async (tag) => {
-      const dbTag = await getManager().findOne(Tag, { tagname: tag });
-      if (!dbTag) {
-        return;
-      }
-      await getManager()
-        .createQueryBuilder()
-        .insert()
-        .into(Tag)
-        .values({ tagname: tag })
-        .execute();
-      const returnValue: Tag = await getManager().findOne(Tag, {
-        tagname: tag,
-      });
-      await getManager()
-        .createQueryBuilder()
-        .insert()
-        .into(PictureTag)
-        .values({ pictureId: pictureId, tagId: returnValue.id })
-        .execute();
-    });
+  async getTagList(data: UpdateTagsDto) {
+    let tagList: number[] = [];
+    for (const tag of data.tags) {
+      const res: Tag = await getManager().findOne(Tag, { tagname: tag });
+      tagList.push(res.id);
+    }
+    return tagList;
   }
 
+  async insertTags(tags: string[], pictureId: number) {}
+
   async removeTagsLeft(tags: Tag[], pictureId: number) {
-    const results = await getManager().find(PictureTag, {
-      pictureId: pictureId,
-    });
-    for (const result of results) {
-      for (const tag of tags) {
-        let found = false;
-        if (result.tagId === tag.id) {
-          found = true;
-        }
-        if (!found) {
-          await getManager().delete(PictureTag, {
-            pictureId: pictureId,
-            tagId: result.tagId,
-          });
-        }
-      }
+    for (const tag of tags) {
     }
   }
 }
