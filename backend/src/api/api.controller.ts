@@ -1,8 +1,7 @@
-import InsertPictureDto from './../Dtos/InsertPictureDto';
+import UpdatePictureDto from './../Dtos/UpdatePictureDto';
 import ResponseHelper from './../utils/ResponseHelper';
 import { DatabaseService } from './../database/database.service';
-import { Controller, Get, Param, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('api')
 export class ApiController {

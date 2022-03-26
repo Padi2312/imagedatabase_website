@@ -25,6 +25,8 @@ export class Picture extends BaseEntity {
   @Column()
   usercomment!: string;
   
+  @Column()
+  name!: string;
 
 
   @Column()

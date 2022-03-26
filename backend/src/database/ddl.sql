@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS picture (
   artist VARCHAR(65) NOT NULL,
   path VARCHAR(255) NOT NULL,
   originalname VARCHAR(65),
+  name VARCHAR(65),
   usercomment VARCHAR(255),
 
   yresolution INT,

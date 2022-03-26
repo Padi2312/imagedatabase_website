@@ -4,7 +4,9 @@ import { Picture } from './entities/Picture';
 import { Injectable } from '@nestjs/common';
 import { getManager } from 'typeorm';
 import InsertPictureDto from './../Dtos/InsertPictureDto';
-import PictureDto from 'src/Dtos/PictureDto';
+import PictureDto from './../Dtos/PictureDto';
+import UpdatePictureDto from './../Dtos/UpdatePictureDto';
+import UpdateTagsDto from './../Dtos/UpdateTagsDto';
 
 @Injectable()
 export class DatabaseService {
@@ -15,7 +17,7 @@ export class DatabaseService {
       .into(Picture)
       .values(body.picture)
       .execute();
-    await this.addTags(body.tags, body.picture);
+    await this.addTags(body.tags, body.picture.id);
   }
 
   async get20Pictures() {
@@ -36,7 +38,9 @@ export class DatabaseService {
       .leftJoinAndSelect('picture_tag', 'picture.id')
       .leftJoinAndSelect('tag', 'picture_tag.tagId')
       .where('picture.artist like :artist', { artist: `%${text}%` })
-      .orWhere('picture.usercomment like :usercomment', { usercomment: `%${text}%` })
+      .orWhere('picture.usercomment like :usercomment', {
+        usercomment: `%${text}%`,
+      })
       .orWhere('picture.originalname like :ogname', { ogname: `%${text}%` })
       .orWhere('tag.tagname like :tagname', { tagname: `%${text}%` })
       .execute();
@@ -53,9 +57,28 @@ export class DatabaseService {
     return { picture: picture[0], tags: tags };
   }
 
-  async updatePicture() {}
+  async updatePicture(data: UpdatePictureDto) {
+    await getManager()
+      .createQueryBuilder()
+      .update(Picture)
+      .set({
+        artist: data.artist,
+        path: data.path,
+        name: data.name,
+        usercomment: data.usercomment,
+        orientation: data.orientation,
+        modifydate: data.modifydate,
+      })
+      .where('id = :id', { id: data.id })
+      .execute();
+    const picture = await getManager().find(Picture, { id: data.id });
+    return await this.modifyPictureResult(picture);
+  }
 
-  async updateTags() {}
+  async updateTags(data: UpdateTagsDto) {
+    await this.addTags(data.tags, data.id);
+    // await this.removeTagsLeft(data.tags, data.id);
+  }
 
   toJson(input: any) {
     return Object.values(JSON.parse(JSON.stringify(input)));
@@ -85,7 +108,7 @@ export class DatabaseService {
     return newpictures;
   }
 
-  async addTags(tags: string[], picture: PictureDto) {
+  async addTags(tags: string[], pictureId: number) {
     tags.forEach(async (tag) => {
       const dbTag = await getManager().findOne(Tag, { tagname: tag });
       if (!dbTag) {
@@ -104,8 +127,28 @@ export class DatabaseService {
         .createQueryBuilder()
         .insert()
         .into(PictureTag)
-        .values({ pictureId: picture.id, tagId: returnValue.id })
+        .values({ pictureId: pictureId, tagId: returnValue.id })
         .execute();
     });
+  }
+
+  async removeTagsLeft(tags: Tag[], pictureId: number) {
+    const results = await getManager().find(PictureTag, {
+      pictureId: pictureId,
+    });
+    for (const result of results) {
+      for (const tag of tags) {
+        let found = false;
+        if (result.tagId === tag.id) {
+          found = true;
+        }
+        if (!found) {
+          await getManager().delete(PictureTag, {
+            pictureId: pictureId,
+            tagId: result.tagId,
+          });
+        }
+      }
+    }
   }
 }
