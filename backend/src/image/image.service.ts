@@ -13,14 +13,15 @@ export class ImageService {
     getThumbnail(imageName: string) {
         try {
             const thumbnailName = Utils.thumbnailName(imageName)
-            sharp(Utils.getImagePathWithName(imageName))
+            sharp(Utils.getImagePathWithName(imageName), { failOnError: false })
                 .resize(200)
                 .jpeg({ quality: 60 })
                 .toFile(thumbnailName)
 
             return thumbnailName
         } catch (err) {
-            throw err
+            console.log("Error on generating Thumbnail.")
+            return err
         }
     }
 
