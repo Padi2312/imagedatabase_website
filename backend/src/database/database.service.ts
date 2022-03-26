@@ -150,10 +150,4 @@ export class DatabaseService {
     return tagList;
   }
 
-  async insertTags(tags: string[], pictureId: number) {}
-
-  async removeTagsLeft(tags: Tag[], pictureId: number) {
-    for (const tag of tags) {
-    }
-  }
 }
