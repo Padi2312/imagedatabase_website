@@ -12,6 +12,7 @@ export interface MetaDataItemProps {
 
 function MetaDataItem(props: MetaDataItemProps) {
 
+    const keysToEdit = ["artist", "name", "orientation", "usercomment"]
     const [key, setKey] = useState("")
     const [text, setText] = useState("")
     const [showEdit, setShowEdit] = useState(false)
@@ -19,7 +20,6 @@ function MetaDataItem(props: MetaDataItemProps) {
     useEffect(() => {
         setKey(props.keyItem)
         setText(props.value)
-        console.log(props);
     }, [props.keyItem, props.value])
 
 
@@ -33,21 +33,23 @@ function MetaDataItem(props: MetaDataItemProps) {
         setShowEdit(false)
     }
 
+    const capitalizeFirstLetter = (text: string) => {
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
 
     return (
         <div>
             <ListGroup.Item className="d-flex justify-content-between w-100">
                 <div style={{ width: "75%" }}>
-                    <div className="fw-bold">{key}</div>
+                    <div className="fw-bold">{capitalizeFirstLetter(key)}</div>
                     {
                         showEdit ?
                             <InputGroup className="mb-3">
                                 <InputGroup.Text>
-                                    {props.keyItem}
+                                    {capitalizeFirstLetter(props.keyItem)}
                                 </InputGroup.Text>
                                 <FormControl
-                                    className="w-50"
-
                                     type="text"
                                     value={text}
                                     onChange={(e) => onChangeText(e)}
@@ -64,7 +66,7 @@ function MetaDataItem(props: MetaDataItemProps) {
 
                 </div>
                 {
-                    ( props.keyItem?.toLowerCase() == "name" || props.keyItem?.toLowerCase() == "orientation") ?
+                    (keysToEdit.includes(props.keyItem?.toLowerCase())) ?
                         <span role="button" onClick={() => {
                             setShowEdit(!showEdit)
                             setText(props.value)

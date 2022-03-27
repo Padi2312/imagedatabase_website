@@ -20,7 +20,6 @@ export default function ChangeTagsModal(props: ChangeTagsModalProps) {
 
     useEffect(() => {
         setTags(picture?.tags ?? [])
-        console.log(picture?.tags);
         return () => { }
     }, [props.picture])
 
@@ -38,7 +37,6 @@ export default function ChangeTagsModal(props: ChangeTagsModalProps) {
 
     const onSave = async () => {
         if (picture?.picture?.id) {
-            console.log(tags)
             await pictureService.changeTagsOfImage(picture.picture.id, tags)
             picture.tags = tags
             props.onChange(picture)

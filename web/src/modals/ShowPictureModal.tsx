@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, ModalBody, ModalHeader } from "react-bootstrap";
+import { Button, Collapse, Modal, ModalBody, ModalHeader } from "react-bootstrap";
+import { BiShow } from 'react-icons/bi';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaDownload } from "react-icons/fa";
+import { GrClose } from "react-icons/gr";
 import MetaData from "../components/MetaData";
 import TagList from "../components/TagList";
 import PictureServie from "../core/PictureService";
@@ -17,6 +19,7 @@ export default function ShowPictureModal(props: ShowPictureModalProps) {
     const pictureService = new PictureServie()
     const [showChangeTagsModal, setShowChangeTagsModal] = useState(false);
     const [picture, setPicture] = useState<PictureTagUrlModel | null>(null);
+    const [showMetaData, setShowMetaData] = useState(false);
 
     useEffect(() => {
         setPicture(props.picture)
@@ -25,13 +28,20 @@ export default function ShowPictureModal(props: ShowPictureModalProps) {
     }, [props.picture])
 
 
+    const onHandleClose = () => {
+        props.onClose()
+        setShowMetaData(false)
+        setShowChangeTagsModal(false)
+        setPicture(null)
+    }
+
     const onDownload = () => {
         pictureService.downloadImage(picture?.download, picture?.picture?.originalname)
     }
 
     return (
         <div>
-            <Modal size="lg" show={props.show} onHide={() => props.onClose()} centered>
+            <Modal size="lg" show={props.show} onHide={onHandleClose} centered>
                 <ModalHeader closeButton>{picture?.picture?.name}</ModalHeader>
                 <ModalBody>
                     <div className="d-flex justify-content-center">
@@ -40,19 +50,31 @@ export default function ShowPictureModal(props: ShowPictureModalProps) {
                     <hr />
                     <h5>Tags</h5>
                     <TagList tagList={picture?.tags ?? []} />
-                    <br />
                     <div onClick={() => setShowChangeTagsModal(true)}>
                         <span className="clickableSmall">Tags ändern <BsPencilSquare /></span>
                     </div>
                     <hr />
+
                     <h5>Metadaten</h5>
-                    <details>
-                        <summary>Metadaten</summary>
-                        <MetaData picture={picture} />
-                    </details>
+                    <div
+                        onClick={() => setShowMetaData(!showMetaData)}
+                        aria-controls="meta-data"
+                        aria-expanded={showMetaData}>
+                        <span className="clickableSmall">
+                            {
+                                showMetaData ? <>Schließen <GrClose /></> : <>Anzeigen <BiShow /></>
+                            }
+
+                        </span>
+                    </div>
+                    <Collapse in={showMetaData} className="mt-3">
+                        <div id="meta-data">
+                            <MetaData picture={picture} />
+                        </div>
+                    </Collapse>
                 </ModalBody>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => props.onClose()}>
+                    <Button variant="secondary" onClick={onHandleClose}>
                         Schließen
                     </Button>
                     <Button className="ms-auto" variant="primary" onClick={onDownload}>

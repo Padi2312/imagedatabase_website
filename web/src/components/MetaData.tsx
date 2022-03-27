@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import { FormControl, InputGroup, ListGroup } from 'react-bootstrap'
-import { FaEdit } from 'react-icons/fa'
+import { ListGroup } from 'react-bootstrap'
 import PictureServie from '../core/PictureService'
 import PictureDto from '../models/PictureDto'
 import PictureTagUrlModel from '../models/PictureTagUrlModel'
@@ -29,14 +27,14 @@ function MetaData(props: MetaDataProps) {
       metaData?.artist,
       metaData?.usercomment,
       metaData?.Orientation
-    ).then(res => {
-
-    })
+    )
   }
 
 
   const render = () => {
     const jsxElement = []
+    const addedKeys: string[] = []
+
     const bufferPic = {
       path: "",
       id: 1,
@@ -44,18 +42,26 @@ function MetaData(props: MetaDataProps) {
       thumbnail: ""
     }
     for (const key in metaData) {
+      //Use bufferpic for not displaying some properties
       if (bufferPic.hasOwnProperty(key)) {
         continue
       }
+      
       if (metaData!.hasOwnProperty(key)) {
         const copy = metaData as any
         if (copy[key]) {
-          console.log(key);
+          addedKeys.push(key)
           jsxElement.push(<MetaDataItem key={key} keyItem={key} value={copy[key]} onSave={onSaveMetaData} />)
         }
       }
     }
-
+    //Keys being available to edit
+    const keysToAdd = ["artist", "usercomment", "Orientation"]
+    keysToAdd.forEach(item => {
+      if (!addedKeys.includes(item)) {
+        jsxElement.push(<MetaDataItem key={item} keyItem={item} value={""} onSave={onSaveMetaData} />)
+      }
+    })
 
     return jsxElement
   }

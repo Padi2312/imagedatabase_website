@@ -19,7 +19,6 @@ export default function LandingPage() {
 
     useEffect(() => {
         pictureService.getRandomImages().then((res: PictureTagUrlModel[]) => {
-            console.log(res)
             renderGrid(res)
         })
         return () => { }

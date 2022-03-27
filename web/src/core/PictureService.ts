@@ -57,13 +57,11 @@ export default class PictureServie {
     }
 
     async changeTagsOfImage(imageId: number, tags: string[]) {
-        console.log(tags)
         const data: UpdateTagsDto = {
             id: imageId,
             tags: tags
         }
         return await this.httpRequester.post("/api/image/tags", data).then((res: ResponseModel) => {
-            console.log(res)
             return res.success
         })
     }
