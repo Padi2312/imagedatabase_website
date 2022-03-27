@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import UpdateChangeableDataDto from 'src/Dtos/UpdateChangeableDataDto';
 import PictureTagUrlModel from 'src/models/PictureTagUrlModel';
 import { getManager } from 'typeorm';
 import { Tag } from './../database/entities/Tag';
@@ -129,6 +130,22 @@ export class DatabaseService {
       tags.push(tag.tagname);
     });
     return tags;
+  }
+
+  updateChangeableData = async (data: UpdateChangeableDataDto) => {
+    await getManager()
+      .createQueryBuilder()
+      .update(Picture)
+      .set(
+        {
+          artist: data.artist,
+          name: data.name,
+          Orientation: data.orientation,
+          usercomment: data.usercomment
+        }
+      )
+      .where('id = :id', { id: data.imageId })
+      .execute();
   }
 
   async modifyPictureResult(results: Picture[]): Promise<PictureTagUrlModel[]> {

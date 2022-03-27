@@ -1,6 +1,7 @@
 import PictureTagUrlModel from "../models/PictureTagUrlModel";
 import ResponseModel from "../models/ResponseModel";
 import { SuccessResponse } from "../models/SuccessResponse";
+import UpdateChangeableDataDto from "../models/UpdateChangeableDataDto";
 import UpdateTagsDto from "../models/UpdateTagsDto";
 import HttpRequester from "./HttpRequester";
 
@@ -17,6 +18,20 @@ export default class PictureServie {
             else {
                 return []
             }
+        })
+    }
+
+    changeData = (imageId: number, name?: string, artist?: string, usercomment?: string, orientation?: string) => {
+    
+        const data: UpdateChangeableDataDto = {
+            imageId: imageId,
+            artist: artist,
+            name: name,
+            orientation: orientation,
+            usercomment: usercomment
+        }
+        return this.httpRequester.post("/api/image/changedata", data).then((res: ResponseModel) => {
+            return res.success
         })
     }
 

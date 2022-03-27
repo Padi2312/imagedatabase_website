@@ -50,7 +50,19 @@ export class ImageController {
       return ResponseHelper.createSuccess()
     }
     catch (err) {
-      return ResponseHelper.createError(err,"Tags konnten nicht geändert werden.")
+      return ResponseHelper.createError(err, "Tags konnten nicht geändert werden.")
+    }
+
+  }
+
+  @Post("/changedata")
+  async changeData(@Body() body) {
+    try {
+      await this.databaseService.updateChangeableData(body.data)
+      return ResponseHelper.createSuccess()
+    }
+    catch (err) {
+      return ResponseHelper.createError(err, "Daten konnten nicht geändert werden.")
     }
 
   }
