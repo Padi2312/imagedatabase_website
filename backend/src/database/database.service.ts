@@ -25,26 +25,31 @@ export class DatabaseService {
       .createQueryBuilder()
       .select()
       .from(Picture, 'picture')
-      .orderBy("RAND()")
+      .orderBy('RAND()')
       .limit(16)
       .execute();
     return await this.modifyPictureResult(results);
   }
 
   async search(text: string) {
+    const results = await getManager().query(
+      `SELECT DISTINCT picture.* FROM picture JOIN picture_tag ON picture.id = picture_tag.pictureId JOIN tag ON picture_tag.tagId = tag.id WHERE picture.artist LIKE "%${text}%" OR picture.usercomment LIKE "%${text}%" OR picture.originalname LIKE "%${text}%" OR tag.tagname LIKE "%${text}%"`,
+    );
+    /*
     const results = await getManager()
       .createQueryBuilder()
       .select()
       .from(Picture, 'picture')
       .leftJoinAndSelect('picture_tag', 'picture.id')
       .leftJoinAndSelect('tag', 'picture_tag.tagId')
-      .where('picture.artist LIKE :artist', { artist: `%${text}%` })
-      .orWhere('picture.usercomment LIKE :usercomment', {
+      .where("artist LIKE :artist", { artist: `%${text}%` })
+      .orWhere("usercomment LIKE :usercomment", {
         usercomment: `%${text}%`,
       })
-      .orWhere('picture.originalname LIKE :ogname', { ogname: `%${text}%` })
-      .orWhere('tag.tagname LIKE :tagname', { tagname: `%${text}%` })
+      .orWhere("originalname LIKE :ogname", { ogname: `%${text}%` })
+      .orWhere("tag.tagname LIKE :tagname", { tagname: `%${text}%` })
       .execute();
+      */
     return await this.modifyPictureResult(results);
   }
 
@@ -53,7 +58,7 @@ export class DatabaseService {
       'SELECT * FROM picture WHERE id = ?',
       [id],
     );
-    const picture = this.toJson(result) as Picture[]
+    const picture = this.toJson(result) as Picture[];
     const tags = await this.getTags(id);
     return { picture: picture[0], tags: tags };
   }
@@ -136,17 +141,15 @@ export class DatabaseService {
     await getManager()
       .createQueryBuilder()
       .update(Picture)
-      .set(
-        {
-          artist: data.artist,
-          name: data.name,
-          Orientation: data.orientation,
-          usercomment: data.usercomment
-        }
-      )
+      .set({
+        artist: data.artist,
+        name: data.name,
+        Orientation: data.orientation,
+        usercomment: data.usercomment,
+      })
       .where('id = :id', { id: data.imageId })
       .execute();
-  }
+  };
 
   async modifyPictureResult(results: Picture[]): Promise<PictureTagUrlModel[]> {
     const resultJson: Picture[] = Object.values(
@@ -168,5 +171,4 @@ export class DatabaseService {
     }
     return tagList;
   }
-
 }
