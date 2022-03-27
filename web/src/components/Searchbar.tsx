@@ -1,7 +1,6 @@
-import React, { FormEvent, useState } from 'react'
-import { Form, Row, Col, Button, FormGroup, InputGroup, Stack } from 'react-bootstrap'
-import { FaSearch, FaUpload } from 'react-icons/fa'
-import UploadModal from '../modals/UploadModal'
+import { FormEvent, useState } from 'react'
+import { Button, Form, Stack } from 'react-bootstrap'
+import { FaSearch } from 'react-icons/fa'
 
 export interface SearchBarProps {
     onSearch: (text: string) => void
@@ -11,7 +10,6 @@ export interface SearchBarProps {
 function SearchBar(props: SearchBarProps) {
 
     const [searchText, setSearchText] = useState("")
-    const [showUploadModal, setShowUploadModal] = useState(false)
 
     const onChangeText = (e: any) => {
         const prev = searchText
@@ -40,18 +38,11 @@ function SearchBar(props: SearchBarProps) {
                         <Button variant="primary" onClick={submitSearch}>
                             <FaSearch />
                         </Button>
-                        <div className='vr'/>
-                        <Button variant="secondary" onClick={() => setShowUploadModal(true)}>
-                            <span className="nobreak" >Hochladen <FaUpload /></span>
-                        </Button>
                 </Stack>
                 <Form.Text muted >
                     Suchen Sie nach Tags, um Bilder des zugehörigen Tags angezeigt zu bekommen.
                 </Form.Text>
             </Form>
-
-            <UploadModal show={showUploadModal} onClose={() => setShowUploadModal(false)} />
-
         </div>
     )
 }

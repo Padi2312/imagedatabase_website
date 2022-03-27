@@ -32,6 +32,23 @@ export class ImageService {
         }
     }
 
+    searchImage = async (text: string) => {
+        try {
+            const result = await this.databaseService.search(text);
+            result.forEach(item => {
+                item.url = Utils.generateUrlForImage(item.picture.originalname)
+                item.thumbnail = Utils.generateUrlForThumbnail(item.picture.originalname)
+                item.download = Utils.generateDownloadUrl(item.picture.id)
+            });
+            return ResponseHelper.createSuccess(result);
+        } catch (error) {
+            return ResponseHelper.createError(
+                error,
+                'Es ist wohl ein Fehler bei der Suche aufgetreten',
+            );
+        }
+    }
+
     async getRandomImages() {
         try {
             const result = await this.databaseService.get20Pictures();

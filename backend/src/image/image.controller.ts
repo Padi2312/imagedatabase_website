@@ -32,15 +32,7 @@ export class ImageController {
 
   @Get('/search/:text')
   async searchImages(@Param('text') text) {
-    try {
-      const result = await this.databaseService.search(text);
-      return ResponseHelper.createSuccess(result);
-    } catch (error) {
-      return ResponseHelper.createError(
-        error,
-        'Es ist wohl ein Fehler bei der Suche aufgetreten',
-      );
-    }
+    return this.imageService.searchImage(text);
   }
 
   @Post("/tags")

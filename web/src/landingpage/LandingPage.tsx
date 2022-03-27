@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
-import { AlertBox } from '../components/AlertBox';
-import PictureThumbnail from '../components/picturethumbnail/PictureThumbnail';
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import { FaUpload } from 'react-icons/fa';
+import PictureList from '../components/ImageList';
 import SearchBar from '../components/Searchbar';
 import PictureServie from '../core/PictureService';
 import ShowPictureModal from '../modals/ShowPictureModal';
+import UploadModal from '../modals/UploadModal';
 import PictureTagUrlModel from '../models/PictureTagUrlModel';
 import './LandingPage.scss';
 
@@ -14,94 +15,56 @@ export default function LandingPage() {
     const pictureService = new PictureServie()
     const [showPictureModal, setShowPictureModal] = useState(false);
     const [currentPicture, setCurrentPicture] = useState<PictureTagUrlModel | null>(null);
-
-    const [elements, setElements] = useState<JSX.Element[]>([]);
+    const [pictureList, setPictureList] = useState<PictureTagUrlModel[]>([]);
+    const [showUploadModal, setShowUploadModal] = useState(false)
 
 
     useEffect(() => {
-        pictureService.getRandomImages().then((res: PictureTagUrlModel[]) => {
-            renderGrid(res)
-        })
+        setRandomImages()
         return () => { }
     }, [])
 
-    const onSearch = async (text: string) => {
-        const urlEncoded = encodeURIComponent(text)
-        await pictureService.searchForPictures(urlEncoded).then(res => {
-            renderGrid(res)
+    const setRandomImages = () => {
+        pictureService.getRandomImages().then((res: PictureTagUrlModel[]) => {
+            setPictureList(res)
         })
     }
 
-    const renderCols = (columnAmount: number, pictures: PictureTagUrlModel[], currentRow: number): JSX.Element[] => {
-        const columnViews = []
-        for (let column = 0; column < columnAmount; column++) {
-            const element = pictures[(currentRow + (currentRow * 3)) + column]
-            columnViews.push(
-                <Col onClick={() => {
-                    setShowPictureModal(true)
-                    setCurrentPicture(element)
-                }
-                } key={currentRow + column}>
-                    <PictureThumbnail picture={element} />
-                </Col>
-            )
+    const onSearch = async (text: string, prev?: string) => {
+        if (text.length == 0) {
+            setRandomImages()
+            return
         }
-        return columnViews
-    }
 
-    const renderGrid = (pictures: PictureTagUrlModel[]) => {
-        if (pictures.length > 3) {
-            const rows = Math.ceil(pictures.length / 4)
-            const remainingCols = pictures.length % 4
-
-            const jsxElement: JSX.Element[] = []
-            for (let row = 0; row < rows; row++) {
-                if (row == rows - 1) {
-                    jsxElement.push(
-                        <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} key={row}>
-                            {
-                                renderCols(remainingCols, pictures, row)
-                            }
-                        </Row>
-                    )
-                }
-                else {
-                    jsxElement.push(
-                        <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} key={row}>
-                            {
-                                renderCols(4, pictures, row)
-                            }
-                        </Row>
-                    )
-                }
-            }
-            setElements(jsxElement)
-        }
-        else {
-            if (pictures.length == 0)
-                return
-                
-            const jsxElement = []
-            jsxElement.push(
-                <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} key={1}>
-                    {
-                        renderCols(pictures.length, pictures, 0)
-                    }
-                </Row>
-            )
-            setElements(jsxElement)
-        }
+        const urlEncoded = encodeURIComponent(text)
+        await pictureService.searchForPictures(urlEncoded).then(res => {
+            setPictureList(res)
+        })
     }
 
     return (
         <div className="body">
-            <SearchBar onSearch={onSearch} onChange={() => { }} />
+            <Row>
+                <Col>
+                    <SearchBar onSearch={onSearch} onChange={() => { }} />
+                </Col>
+                <Col>
+                    <Button variant="secondary" onClick={() => setShowUploadModal(true)}>
+                        <span className="nobreak" >Hochladen <FaUpload /></span>
+                    </Button>
+                </Col>
+            </Row>
+            <UploadModal show={showUploadModal} onClose={() => {
+                setShowUploadModal(false)
+                setRandomImages()
+            }} />
             <ShowPictureModal show={showPictureModal} onClose={() => setShowPictureModal(false)} picture={currentPicture} />
             <Container fluid>
-                {
-                    elements.length != 0 ? elements :
-                        <AlertBox show={true} variant='info' text={"Noch keine Bilder vorhanden."} />
-                }
+                <PictureList pictures={pictureList} onClickPicture={(item) => {
+                    setShowPictureModal(true)
+                    setCurrentPicture(item)
+                }} />
+
             </Container>
         </div >
     )

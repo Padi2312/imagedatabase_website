@@ -32,9 +32,7 @@ export class DatabaseService {
   }
 
   async search(text: string) {
-    const results = await getManager().query(
-      `SELECT DISTINCT picture.* FROM picture JOIN picture_tag ON picture.id = picture_tag.pictureId JOIN tag ON picture_tag.tagId = tag.id WHERE picture.artist LIKE "%${text}%" OR picture.usercomment LIKE "%${text}%" OR picture.originalname LIKE "%${text}%" OR tag.tagname LIKE "%${text}%"`,
-    );
+    const results = await getManager().query(`SELECT DISTINCT picture.* FROM picture LEFT JOIN picture_tag ON picture.id = picture_tag.pictureId LEFT JOIN tag ON picture_tag.tagId = tag.id WHERE picture.artist LIKE "%${text}%" OR picture.usercomment LIKE "%${text}%" OR picture.originalname LIKE "%${text}%" OR tag.tagname LIKE "%${text}%"`);
     /*
     const results = await getManager()
       .createQueryBuilder()
