@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
+import { AlertBox } from '../components/AlertBox';
 import PictureThumbnail from '../components/picturethumbnail/PictureThumbnail';
 import SearchBar from '../components/Searchbar';
 import PictureServie from '../core/PictureService';
@@ -24,12 +25,17 @@ export default function LandingPage() {
         return () => { }
     }, [])
 
-
+    const onSearch = async (text: string) => {
+        const urlEncoded = encodeURIComponent(text)
+        await pictureService.searchForPictures(urlEncoded).then(res => {
+            renderGrid(res)
+        })
+    }
 
     const renderCols = (columnAmount: number, pictures: PictureTagUrlModel[], currentRow: number): JSX.Element[] => {
         const columnViews = []
         for (let column = 0; column < columnAmount; column++) {
-            const element = pictures[(currentRow+(currentRow*3)) + column]
+            const element = pictures[(currentRow + (currentRow * 3)) + column]
             columnViews.push(
                 <Col onClick={() => {
                     setShowPictureModal(true)
@@ -50,7 +56,7 @@ export default function LandingPage() {
 
             const jsxElement: JSX.Element[] = []
             for (let row = 0; row < rows; row++) {
-                if (row == rows - 1 ) {
+                if (row == rows - 1) {
                     jsxElement.push(
                         <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} key={row}>
                             {
@@ -72,21 +78,19 @@ export default function LandingPage() {
             setElements(jsxElement)
         }
         else {
+            if (pictures.length == 0)
+                return
+                
             const jsxElement = []
-            jsxElement.push(<Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} index={-1}>
-                {
-                    renderCols(pictures.length, pictures, 1)
-                }
-            </Row>)
+            jsxElement.push(
+                <Row className="mb-3" xs={1} sm={1} md={2} lg={2} xl={4} xxl={4} key={1}>
+                    {
+                        renderCols(pictures.length, pictures, 0)
+                    }
+                </Row>
+            )
             setElements(jsxElement)
         }
-    }
-
-    const onSearch = async (text: string, prev?: string) => {
-        const urlEncoded = encodeURIComponent(text)
-        await pictureService.searchForPictures(urlEncoded).then(res => {
-            renderGrid(res)
-        })
     }
 
     return (
@@ -95,7 +99,8 @@ export default function LandingPage() {
             <ShowPictureModal show={showPictureModal} onClose={() => setShowPictureModal(false)} picture={currentPicture} />
             <Container fluid>
                 {
-                    elements
+                    elements.length != 0 ? elements :
+                        <AlertBox show={true} variant='info' text={"Noch keine Bilder vorhanden."} />
                 }
             </Container>
         </div >
