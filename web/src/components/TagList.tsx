@@ -7,7 +7,7 @@ export interface TagListProps {
 
 function TagList(props: TagListProps) {
     return (
-        <div>
+        <div className='mb-3'>
             {
                 props.tagList.length == 0 ?
                         <p><b>Noch keine Tags</b></p>
