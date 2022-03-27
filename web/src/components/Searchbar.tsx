@@ -32,7 +32,7 @@ function SearchBar(props: SearchBarProps) {
                             className='me-auto'
                             type="text"
                             aria-describedby="searchbar"
-                            placeholder='Suchen Sie nach Tags'
+                            placeholder='Suchen Sie nach einem Bild'
                             onChange={onChangeText}
                         />
                         <Button variant="primary" onClick={submitSearch}>
@@ -40,7 +40,7 @@ function SearchBar(props: SearchBarProps) {
                         </Button>
                 </Stack>
                 <Form.Text muted >
-                    Suchen Sie nach Tags, um Bilder des zugehörigen Tags angezeigt zu bekommen.
+                    Sie können nach dem Namen, Dateiname, Artist, Kommentar oder Tags suchen.
                 </Form.Text>
             </Form>
         </div>

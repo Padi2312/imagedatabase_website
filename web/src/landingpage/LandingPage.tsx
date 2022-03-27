@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { FaUpload } from 'react-icons/fa';
-import PictureList from '../components/ImageList';
+import PictureList from '../components/PictureList';
 import SearchBar from '../components/Searchbar';
 import PictureServie from '../core/PictureService';
 import ShowPictureModal from '../modals/ShowPictureModal';

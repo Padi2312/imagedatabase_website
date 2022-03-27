@@ -32,7 +32,8 @@ export class ImageController {
 
   @Get('/search/:text')
   async searchImages(@Param('text') text) {
-    return this.imageService.searchImage(text);
+    const decoded = decodeURIComponent(text)
+    return this.imageService.searchImage(decoded);
   }
 
   @Post("/tags")

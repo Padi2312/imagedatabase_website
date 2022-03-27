@@ -1,6 +1,6 @@
 export default class HttpRequester {
 
-    private readonly baseUrl = process.env.REACT_APP_BASEURL
+    private readonly baseUrl = process.env.REACT_APP_BACKEND_BASEURL
 
     async get(path: string) {
         const url = this.getUrl(path)
