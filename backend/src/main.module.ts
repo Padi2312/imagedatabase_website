@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as path from 'path';
@@ -10,6 +11,7 @@ import { ImageModule } from './image/image.module';
 
 @Module({
     imports: [
+        ConfigModule.forRoot(),
         ServeStaticModule.forRoot({
             rootPath: path.join(__dirname, '..', 'public'),
             renderPath: path.join(__dirname, '..', 'public')

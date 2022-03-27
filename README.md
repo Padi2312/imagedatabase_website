@@ -7,11 +7,17 @@ Mit ```docker-compose up``` wird das Projekt gestartet.
 
 Unter http://localhost:3000 ereicht man dann das Projekt.
 
+### Daten löschen
+Um die BilderDB zu löschen, müssen ALLE INHALTE aus folgenden Verzeichnissen gelöscht werden:
+./database/data
+./images
+
 # Aufbau
 ## Backend
 Das Backend liegt unter "./backend". 
 In diesem ist auch das zugehörige Dockerfile, so wie eine .env-Datei,
-um Variablen anzupassen
+um Variablen anzupassen.
+Die hochgeladen Bilder befinden sich unter "./images"
 
 ## Frontend
 Das Frontend ist unter "./web" zu finden, es beinhaltet ebenfalls

@@ -16,6 +16,8 @@ services:
     build:
       context: ./backend
     restart: unless-stopped
+    volumes:
+      - ./images:/app/public/images
     depends_on:
       imagedb_database:
         condition: service_healthy 
