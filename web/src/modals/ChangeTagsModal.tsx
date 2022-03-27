@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import { Badge, Button, FormControl, FormGroup, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from "react-bootstrap";
 import { FaPlus, FaTrash } from "react-icons/fa";
+import PictureServie from "../core/PictureService";
 import IModalProps from "../interfaces/IModalProps";
+import PictureTagUrlModel from "../models/PictureTagUrlModel";
 
-export default function ChangeTagsModal(props: IModalProps) {
+export interface ChangeTagsModalProps extends IModalProps {
+    picture: PictureTagUrlModel | null
+    onChange: (image: PictureTagUrlModel) => void
+}
 
+export default function ChangeTagsModal(props: ChangeTagsModalProps) {
+
+    const pictureService = new PictureServie()
+    let picture = props.picture
     const [currentTag, setCurrentTag] = useState("")
-    const [tags, setTags] = useState(["sonne", "mond", "stern", "etc"])
+    const [tags, setTags] = useState(picture?.tags ?? [])
+
 
     useEffect(() => {
-
+        setTags(picture?.tags ?? [])
+        console.log(picture?.tags);
         return () => { }
-    }, [tags])
+    }, [props.picture])
 
 
     const removeTag = (_index: number) => {
@@ -25,10 +36,21 @@ export default function ChangeTagsModal(props: IModalProps) {
         setCurrentTag("")
     }
 
-    const onSave = () => {
-
+    const onSave = async () => {
+        if (picture?.picture?.id) {
+            console.log(tags)
+            await pictureService.changeTagsOfImage(picture.picture.id, tags)
+            picture.tags = tags
+            props.onChange(picture)
+            props.onClose()
+        }
     }
 
+    const _handleKeyDown = (e:any) => {
+        if (e.key === 'Enter') {
+            addTag()
+        }
+    }
 
     return (
 
@@ -49,7 +71,7 @@ export default function ChangeTagsModal(props: IModalProps) {
                 <FormGroup>
                     <InputGroup>
                         <InputGroup.Text>Tag hinzufügen</InputGroup.Text>
-                        <FormControl type="text" value={currentTag} placeholder="Tag eingeben" onChange={(e) => { setCurrentTag(e.target.value) }} />
+                        <FormControl type="text" value={currentTag} placeholder="Tag eingeben" onKeyDown={_handleKeyDown} onChange={(e) => { setCurrentTag(e.target.value) }} />
                         <Button onClick={addTag}>
                             <FaPlus />
                         </Button>

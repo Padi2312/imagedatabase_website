@@ -8,13 +8,11 @@ export interface PictureThumbnailProps {
 
 function PictureThumbnail(props: PictureThumbnailProps) {
     return (
-        <div className="PictureThumbnail m-3" >
-            <Card className="image-card-body">
-                <Card.Body>
-                    <img className="imagethumbnail" src={props.picture?.thumbnail} alt={props.picture?.picture?.name} width={250} height={250} />
-                </Card.Body>
-            </Card>
-        </div>
+        <Card className="PictureThumbnail  m-3" >
+            <Card.Body className="image-card-body">
+                <img className="imagethumbnail" src={props.picture?.thumbnail} alt={props.picture?.picture?.name} width={250} height={250} />
+            </Card.Body>
+        </Card>
     )
 }
 

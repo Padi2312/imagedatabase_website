@@ -24,7 +24,8 @@ export class DatabaseService {
       .createQueryBuilder()
       .select()
       .from(Picture, 'picture')
-      .limit(20)
+      .orderBy("RAND()")
+      .limit(16)
       .execute();
     return await this.modifyPictureResult(results);
   }

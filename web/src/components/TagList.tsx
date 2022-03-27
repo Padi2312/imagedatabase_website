@@ -9,13 +9,15 @@ function TagList(props: TagListProps) {
     return (
         <div>
             {
-                props.tagList?.map((element, index) => {
-                    return (
-                        <Badge bg="info" key={index} className="me-1">
-                            {element}
-                        </Badge>
-                    )
-                })
+                props.tagList.length == 0 ?
+                        <p><b>Noch keine Tags</b></p>
+                    : props.tagList?.map((element, index) => {
+                        return (
+                            <Badge bg="info" key={index} className="me-1">
+                                {element}
+                            </Badge>
+                        )
+                    })
             }
         </div>
     )

@@ -1,6 +1,7 @@
 import PictureTagUrlModel from "../models/PictureTagUrlModel";
 import ResponseModel from "../models/ResponseModel";
 import { SuccessResponse } from "../models/SuccessResponse";
+import UpdateTagsDto from "../models/UpdateTagsDto";
 import HttpRequester from "./HttpRequester";
 
 export default class PictureServie {
@@ -38,5 +39,17 @@ export default class PictureServie {
             return this.httpRequester.downloadFile(downloadUrl, fileName).then((res: ResponseModel) => {
 
             })
+    }
+
+    async changeTagsOfImage(imageId: number, tags: string[]) {
+        console.log(tags)
+        const data: UpdateTagsDto = {
+            id: imageId,
+            tags: tags
+        }
+        return await this.httpRequester.post("/api/image/tags", data).then((res: ResponseModel) => {
+            console.log(res)
+            return res.success
+        })
     }
 }

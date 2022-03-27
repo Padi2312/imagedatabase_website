@@ -1,6 +1,7 @@
 import { DatabaseService } from 'src/database/database.service';
 import ResponseHelper from './../utils/ResponseHelper';
 import {
+  Body,
   Controller,
   Get,
   Param,
@@ -40,6 +41,18 @@ export class ImageController {
         'Es ist wohl ein Fehler bei der Suche aufgetreten',
       );
     }
+  }
+
+  @Post("/tags")
+  async changeTage(@Body() body) {
+    try {
+      await this.databaseService.updateTags(body.data)
+      return ResponseHelper.createSuccess()
+    }
+    catch (err) {
+      return ResponseHelper.createError(err,"Tags konnten nicht geändert werden.")
+    }
+
   }
 
   @Post('/upload')

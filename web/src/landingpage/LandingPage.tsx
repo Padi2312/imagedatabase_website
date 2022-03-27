@@ -83,8 +83,9 @@ export default function LandingPage() {
         }
     }
 
-    const onSearch = (text: string, prev?: string) => {
-        pictureService.searchForPictures(text).then(res => {
+    const onSearch = async (text: string, prev?: string) => {
+        const urlEncoded = encodeURIComponent(text)
+        await pictureService.searchForPictures(urlEncoded).then(res => {
             renderGrid(res)
         })
     }

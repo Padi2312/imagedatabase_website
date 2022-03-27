@@ -1,15 +1,12 @@
 .PictureThumbnail {
   cursor: pointer;
-  max-width: fit-content;   
-  .image-card-body{
-    max-width: fit-content;   
-  }
+  max-width: fit-content;
 }
 
-.PictureThumbnail:hover {
-  border: 5px solid #ddd;
+.image-card-body {
 }
 
-.imagethumbnail{
-
+.image-card-body:hover {
+  border: solid 4px  #ddd;
+  transition: border-width 100ms linear;
 }

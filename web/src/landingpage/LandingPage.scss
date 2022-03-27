@@ -3,20 +3,20 @@
   padding-bottom: 3vh;
 }
 
-.clickable {
-  cursor: pointer;
-}
-
-.clickable:hover {
-  border: 5px solid #ddd;
-}
 
 .clickableSmall {
   cursor: pointer;
+  border: 2px solid rgba(190, 190, 190, 0.349);
+  background-color: rgba(184, 184, 184, 0.253);
+  border-radius: 4px;
+  padding: 0.3em;
 }
 
 .clickableSmall:hover {
-  border: 1px solid #ddd;
+  background-color: gray;
+  -webkit-transition: background-color 300ms ease-out;
+  -ms-transition: background-color 300ms ease-out;
+  transition: background-color 300ms ease-out;
 }
 
 .nobreak {
