@@ -33,21 +33,6 @@ export class DatabaseService {
 
   async search(text: string) {
     const results = await getManager().query(`SELECT DISTINCT picture.* FROM picture LEFT JOIN picture_tag ON picture.id = picture_tag.pictureId LEFT JOIN tag ON picture_tag.tagId = tag.id WHERE picture.artist LIKE "%${text}%" OR picture.usercomment LIKE "%${text}%" OR picture.originalname LIKE "%${text}%" OR picture.name LIKE "%${text}%" OR tag.tagname LIKE "%${text}%"`);
-    /*
-    const results = await getManager()
-      .createQueryBuilder()
-      .select()
-      .from(Picture, 'picture')
-      .leftJoinAndSelect('picture_tag', 'picture.id')
-      .leftJoinAndSelect('tag', 'picture_tag.tagId')
-      .where("artist LIKE :artist", { artist: `%${text}%` })
-      .orWhere("usercomment LIKE :usercomment", {
-        usercomment: `%${text}%`,
-      })
-      .orWhere("originalname LIKE :ogname", { ogname: `%${text}%` })
-      .orWhere("tag.tagname LIKE :tagname", { tagname: `%${text}%` })
-      .execute();
-      */
     return await this.modifyPictureResult(results);
   }
 
