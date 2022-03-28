@@ -7,6 +7,7 @@ import MetaDataItem from './MetaDataItem'
 
 export interface MetaDataProps {
   picture: PictureTagUrlModel | null
+  onMetaDataUpdated: (pic: PictureTagUrlModel) => void
 }
 
 
@@ -27,7 +28,12 @@ function MetaData(props: MetaDataProps) {
       metaData?.artist,
       metaData?.usercomment,
       metaData?.Orientation
-    )
+    ).then(res => {
+      const copyPicture = props.picture
+      copyPicture!.picture = metaData!
+      const updatedPic = copyPicture
+      props.onMetaDataUpdated(updatedPic!)
+    })
   }
 
 
@@ -46,7 +52,7 @@ function MetaData(props: MetaDataProps) {
       if (bufferPic.hasOwnProperty(key)) {
         continue
       }
-      
+
       if (metaData!.hasOwnProperty(key)) {
         const copy = metaData as any
         if (copy[key]) {

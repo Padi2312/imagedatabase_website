@@ -69,7 +69,10 @@ export default function ShowPictureModal(props: ShowPictureModalProps) {
                     </div>
                     <Collapse in={showMetaData} className="mt-3">
                         <div id="meta-data">
-                            <MetaData picture={picture} />
+                            <MetaData picture={picture} onMetaDataUpdated={(pic) => {
+                                setPicture(null)
+                                setPicture(pic)
+                            }} />
                         </div>
                     </Collapse>
                 </ModalBody>
