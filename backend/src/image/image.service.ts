@@ -12,11 +12,6 @@ export class ImageService {
         private readonly databaseService: DatabaseService,
     ) { }
 
-    search() {
-
-    }
-
-
     generateThumbnail(imageName: string) {
         try {
             const thumbnailName = Utils.thumbnailName(imageName)
