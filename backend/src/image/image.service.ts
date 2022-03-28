@@ -21,7 +21,8 @@ export class ImageService {
         try {
             const thumbnailName = Utils.thumbnailName(imageName)
             sharp(Utils.getImagePathWithName(imageName), { failOnError: false })
-                .resize(200)
+                .resize(200, 200)
+                .withMetadata()
                 .jpeg({ quality: 60 })
                 .toFile(thumbnailName)
 
