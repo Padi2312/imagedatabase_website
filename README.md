@@ -2,9 +2,9 @@
 Webseite um Bilder hochzuladen, welche dann gespeichert werden. Zusätzlcih lassen sich einige Meta-Daten verändern, sowie Tags zu ausgewählten Bildern hinzufügen.
 
 ### Zuteilung der Aufgaben
-Datenbank + Datenbank Funktion im Backend: Mirco 1165783 \
-Frontend: Simon 6175790 \
-Teile vom Backend + Anbindung an Frontend + Docker: Patrick 7414700
+Datenbank + Datenbank Funktion im Backend: Mirco  \
+Frontend: Simon  \
+Teile vom Backend + Anbindung an Frontend + Docker: Patrick 
 
 # Benutzung
 Um das Projekt auf dem PC zu starten muss man sich im Hauptverzeichnis befinden. (Dort wo die docker-compose.yml Datei liegt)
