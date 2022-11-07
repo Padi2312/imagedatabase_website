@@ -18,11 +18,11 @@ jobs:
         with:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm i
-      - run: npm test
+      - run: cd ./backend && npm i
+      - run: cd ./backend && npm test
       
       - name: Build the Docker image
-        run: docker build . --file ./backend/Dockerfile --tag docker.io/padi2312/imagedb-backend:${{ github.sha }}
+        run: cd ./backend && docker build . --file Dockerfile --tag docker.io/padi2312/imagedb-backend:${{ github.sha }}
     
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
