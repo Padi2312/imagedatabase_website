@@ -6,7 +6,7 @@ import UpdateTagsDto from 'src/Dtos/UpdateTagsDto';
 
 @Controller('api')
 export class ApiController {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor() {}
 
   @Get('/')
   getApiVersion() {

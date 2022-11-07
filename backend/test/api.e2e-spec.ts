@@ -10,6 +10,8 @@ describe('ApiController (e2e)', () => {
       imports: [ApiModule],
     }).compile();
 
+    jest.useFakeTimers('modern')
+    jest.setSystemTime(new Date("2022-11-07T19:25:52.476Z"))
     app = moduleFixture.createNestApplication();
     await app.init();
   });
@@ -20,7 +22,7 @@ describe('ApiController (e2e)', () => {
       .expect(200)
       .expect({
         version: 1,
-        dateTime: new Date().toISOString(),
+        dateTime: new Date("2022-11-07T19:25:52.476Z").toISOString(),
       });
   });
 });
